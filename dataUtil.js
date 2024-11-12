@@ -1,34 +1,36 @@
-import { DateTime } from "luxon";
+function dataFutura(data, dataAtual) {
+  if (data.year < dataAtual.year) return false;
 
-export function dataFutura(data) {
-  let dataAtual = DateTime.now();
+  if (data.year === dataAtual.year && data.month < dataAtual.month)
+    return false;
+
   if (
-    data.day >= dataAtual.day &&
-    data.month >= dataAtual.month &&
-    data.year >= dataAtual.year
+    data.year === dataAtual.year &&
+    data.month === dataAtual.month &&
+    data.day < dataAtual.day
+  )
+    return false;
+
+  return true;
+}
+
+function horaFutura(data, hora, dataAtual) {
+  if (!dataFutura(data, dataAtual)) return false;
+
+  if (
+    data.year !== dataAtual.year ||
+    data.month !== dataAtual.month ||
+    data.day !== dataAtual.day
   )
     return true;
-  else return false;
+
+  if (hora.hour < dataAtual.hour) return false;
+
+  if (!(hora.hour === dataAtual.hour)) return true;
+
+  if (hora.minute <= dataAtual.minute) return false;
+
+  return true;
 }
 
-export function dataHoraFutura(data, horaInicial) {
-  let dataAtual = DateTime.now();
-  if (
-    data.day >= dataAtual.day &&
-    data.month >= dataAtual.month &&
-    data.year >= dataAtual.year
-  )
-    if (
-      data.hasSame(dataAtual, "day") &&
-      data.hasSame(dataAtual, "month") &&
-      data.hasSame(dataAtual, "year")
-    )
-      if (horaInicial.hour >= dataAtual.hour)
-        if (horaInicial.hasSame(dataAtual, "hour"))
-          if (horaInicial.minute > dataAtual.minute) return true;
-          else return false;
-        else return true;
-      else return false;
-    else return true;
-  else return false;
-}
+export { dataFutura, horaFutura };
