@@ -1,11 +1,9 @@
-import Consultorio from "../model/consultorio.js";
+import consultorio from "../model/consultorio.js";
 import consultaRemoverForm from "../view/consultaRemoverForm.js";
 import output from "../view/output.js";
 
 export default function consultaRemover(cpfForm) {
   const cpf = cpfForm.cpf;
-
-  const consultorio = new Consultorio();
 
   const validaCpf = consultorio.buscarPaciente(cpf);
   if (validaCpf.isFailure) {

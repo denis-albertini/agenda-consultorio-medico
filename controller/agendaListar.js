@@ -1,10 +1,8 @@
-import Consultorio from "../model/consultorio.js";
+import consultorio from "../model/consultorio.js";
 import output from "../view/output.js";
 
 export default function agendaListar(formulario) {
   const opcao = formulario.opcao;
-
-  const consultorio = new Consultorio();
 
   if (opcao !== "P") {
     output(consultorio.listarAgenda());

@@ -1,12 +1,10 @@
-import Consultorio from "../model/consultorio.js";
+import consultorio from "../model/consultorio.js";
 import consultaRegistrarForm from "../view/consultaRegistrarForm.js";
 import Consulta from "../model/consulta.js";
 import output from "../view/output.js";
 
 export default function consultaRegistrar(cpfForm) {
   const cpf = cpfForm.cpf;
-
-  const consultorio = new Consultorio();
 
   const validaCpf = consultorio.buscarPaciente(cpf);
   if (validaCpf.isFailure) {

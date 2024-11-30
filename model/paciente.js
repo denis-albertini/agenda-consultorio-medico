@@ -1,10 +1,5 @@
 import Result from "./result.js";
-import {
-  validarCpf,
-  validarNome,
-  validarDataNascimento,
-  validarHoraFutura,
-} from "./validador.js";
+import validador from "./validador.js";
 
 export default class Paciente {
   #cpf;
@@ -34,7 +29,10 @@ export default class Paciente {
       data: consulta.data,
       horaInicial: consulta.horaInicial,
       get status() {
-        const validaHoraFutura = validarHoraFutura(this.horaInicial, this.data);
+        const validaHoraFutura = validador.validarHoraFutura(
+          this.horaInicial,
+          this.data
+        );
         if (validaHoraFutura.isFailure) return false;
         return true;
       },
@@ -44,15 +42,16 @@ export default class Paciente {
   constructor(cpf, nome, dataNascimento) {
     const erros = [];
 
-    const validaCpf = validarCpf(cpf);
+    const validaCpf = validador.validarCpf(cpf);
     if (validaCpf.isFailure) erros.push(...validaCpf.errors);
     cpf = validaCpf.value;
 
-    const validaNome = validarNome(nome);
+    const validaNome = validador.validarNome(nome);
     if (validaNome.isFailure) erros.push(...validaNome.errors);
     nome = validaNome.value;
 
-    const validaDataNascimento = validarDataNascimento(dataNascimento);
+    const validaDataNascimento =
+      validador.validarDataNascimento(dataNascimento);
     if (validaDataNascimento.isFailure)
       erros.push(...validaDataNascimento.errors);
     dataNascimento = validaDataNascimento.value;

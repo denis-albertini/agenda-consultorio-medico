@@ -1,10 +1,6 @@
 import Paciente from "./paciente.js";
 import Result from "./result.js";
-import {
-  validarDataFutura,
-  validarHoraInicial,
-  validarHoraFinal,
-} from "./validador.js";
+import validador from "./validador.js";
 
 export default class Consulta {
   #data;
@@ -28,15 +24,15 @@ export default class Consulta {
   constructor(data, horaInicial, horaFinal, paciente) {
     const erros = [];
 
-    const validaData = validarDataFutura(data);
+    const validaData = validador.validarDataFutura(data);
     if (validaData.isFailure) erros.push(...validaData.errors);
     data = validaData.value;
 
-    const validahoraInicial = validarHoraInicial(horaInicial, data);
+    const validahoraInicial = validador.validarHoraInicial(horaInicial, data);
     if (validahoraInicial.isFailure) erros.push(...validahoraInicial.errors);
     horaInicial = validahoraInicial.value.hora;
 
-    const validaHoraFinal = validarHoraFinal(horaFinal, horaInicial);
+    const validaHoraFinal = validador.validarHoraFinal(horaFinal, horaInicial);
     if (validaHoraFinal.isFailure) erros.push(...validaHoraFinal.errors);
     horaFinal = validaHoraFinal.value.horaFinal;
 

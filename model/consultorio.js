@@ -1,10 +1,10 @@
-import { validarCpf, validarData, validarHoraInicial } from "./validador.js";
+import validador from "./validador.js";
 import Paciente from "./paciente.js";
 import Consulta from "./consulta.js";
 import Result from "./result.js";
 import { DateTime } from "luxon";
 
-export default class Consultorio {
+class Consultorio {
   static #instancia = null;
   #horaAbertura = DateTime.fromFormat("0800", "HHmm");
   #horaFechamento = DateTime.fromFormat("1900", "HHmm");
@@ -25,7 +25,7 @@ export default class Consultorio {
   }
 
   buscarPaciente(cpf) {
-    const validaCpf = validarCpf(cpf);
+    const validaCpf = validador.validarCpf(cpf);
     if (validaCpf.isFailure) return validaCpf;
     cpf = validaCpf.value;
 
@@ -87,7 +87,7 @@ export default class Consultorio {
     const validaCpf = this.buscarPaciente(cpf);
     if (validaCpf.isFailure) erros.push(...validaCpf.errors);
 
-    const validaHora = validarHoraInicial(horaInicial, data, this);
+    const validaHora = validador.validarHoraInicial(horaInicial, data, this);
     if (validaHora.isFailure) erros.push(...validaHora.errors);
     horaInicial = validaHora.value.horaInicial;
     data = validaHora.value.data;
@@ -244,11 +244,11 @@ export default class Consultorio {
     if (arguments.length === 2) {
       const erros = [];
 
-      const validaDataInicial = validarData(dataInicial);
+      const validaDataInicial = validador.validarData(dataInicial);
       if (validaDataInicial.isFailure) erros.push(...validaDataInicial.errors);
       dataInicial = validaDataInicial.value;
 
-      const validaDataFinal = validarData(dataFinal);
+      const validaDataFinal = validador.validarData(dataFinal);
       if (validaDataFinal.isFailure) erros.push(...validaDataFinal.errors);
       dataFinal = validaDataFinal.value;
 
@@ -298,3 +298,7 @@ export default class Consultorio {
     return Result.success(result);
   }
 }
+
+const consultorio = new Consultorio();
+
+export default consultorio;
